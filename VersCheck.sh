@@ -1,20 +1,21 @@
 #!/bin/bash
 
-# These are tests for defining the variables
-# echo $VersCheck
-# echo `expr index "$VersCheck" "12"`
-# echo ${VersCheck:$Position-1:5}
+VERSCHECK=   `cat /etc/issue | sed 's/\ //g' | sed 's/\\.//g' | sed 's/\\\//g'`
 
-VersCheck=`cat /etc/issue`
+#echo $VERSCHECK
 
-Position=`expr index "$VersCheck" "12"`
+POSITION=`expr index "$VERSCHECK" "12"`
 
-Version=${VersCheck:$Position-1:5}
+#echo $POSITION
 
-if [[ "$Version"  == "12.04" ]]
-  then
+VERSION=`echo ${VERSCHECK:$POSITION-1:4}`
+
+#echo $VERSION
+
+if [[ "$VERSION"  == "1204" ]];  then
     echo "Ubuntu 12.04 LTS detected.  Amahi install may continue."
-else
-  echo "We're going to have to stop here.  Amahi is supported only on Ubuntu 12.04 LTS." 1&>2
-  exit
+  elif [[ "$VERSION" != "1204" ]]; then
+    echo "We're going to have to stop here.  Amahi is supported only on Ubuntu 12.04 LTS." >&2
+    exit
 fi
+
